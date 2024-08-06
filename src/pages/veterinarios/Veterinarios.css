@@ -1,0 +1,53 @@
+.veterinarios-body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding-top: 70px; 
+    color: #333;
+  }
+  
+  .veterinarios-content {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .veterinarios-content h1 {
+    font-size: 2.5rem;
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  .veterinarios-card {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .veterinarios-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .veterinarios-card img {
+    height: 400px; 
+    object-fit: cover; 
+  }
+  
+  .veterinarios-card .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+ 
+  @media (max-width: 768px) {
+    .veterinarios-content h1 {
+      font-size: 2rem;
+    }
+  
+    .veterinarios-card .card-title {
+      font-size: 1rem;
+    }
+  }
