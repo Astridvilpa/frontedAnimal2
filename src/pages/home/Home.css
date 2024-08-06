@@ -1,0 +1,118 @@
+.body-home {
+    font-family: 'Arial', sans-serif;
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    color: white;
+  }
+  
+  .body-home::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(/img/R.jpeg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0.8;
+    z-index: -1;
+  }
+  
+  /* Estilos para el Navbar */
+  .custom-navbar {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 0.5rem 1rem;
+  }
+  
+  .custom-navbar-brand {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #f0a500 !important;
+    margin-right: auto;
+  }
+  
+  .custom-navbar-nav {
+    margin-left: auto;
+  }
+  
+  .custom-nav-link {
+    color: #f0a500 !important;
+    margin-right: 15px;
+    font-weight: 500;
+    font-family: 'Arial', sans-serif;
+    transition: color 0.3s;
+  }
+  
+  .custom-nav-link:hover {
+    color: #ffd700 !important;
+  }
+  
+  .custom-navbar-toggler {
+    border-color: transparent;
+    color: #f0a500;
+  }
+  
+  /* Contenedor de bienvenida */
+  .welcome-container {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 50px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 100px auto;
+    max-width: 800px;
+  }
+  
+  .welcome-container h1 {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  
+  .welcome-container p.init {
+    font-size: 1.2rem;
+    color: #ddd;
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  
+  /* Estilos para dispositivos móviles */
+  @media (max-width: 768px) {
+    .custom-navbar-brand {
+      font-size: 1.2rem;
+    }
+  
+    .custom-navbar-nav {
+      margin-left: 0; /* Asegura que los enlaces de navegación estén centrados en móviles */
+      text-align: center; /* Centra los enlaces de navegación */
+      width: 100%; /* Asegura que ocupen todo el ancho */
+    }
+  
+    .custom-nav-link {
+      margin-right: 0; /* Elimina el margen derecho en móviles */
+      display: block; /* Hace que cada enlace sea un bloque */
+      margin-bottom: 10px; /* Añade un margen inferior para separar los enlaces */
+    }
+  
+    .welcome-container {
+      padding: 30px 15px;
+    }
+  
+    .welcome-container h1 {
+      font-size: 2rem;
+    }
+  
+    .welcome-container p.init {
+      font-size: 1rem;
+    }
+  }
