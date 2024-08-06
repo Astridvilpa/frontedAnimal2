@@ -23,7 +23,7 @@
     z-index: -1;
   }
   
-  /* Estilos para el Navbar */
+ 
   .custom-navbar {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: fixed;
@@ -62,7 +62,7 @@
     color: #f0a500;
   }
   
-  /* Contenedor de bienvenida */
+  
   .welcome-container {
     text-align: center;
     background-color: rgba(0, 0, 0, 0.5);
@@ -86,22 +86,22 @@
     line-height: 1.6;
   }
   
-  /* Estilos para dispositivos móviles */
+
   @media (max-width: 768px) {
     .custom-navbar-brand {
       font-size: 1.2rem;
     }
   
     .custom-navbar-nav {
-      margin-left: 0; /* Asegura que los enlaces de navegación estén centrados en móviles */
-      text-align: center; /* Centra los enlaces de navegación */
-      width: 100%; /* Asegura que ocupen todo el ancho */
+      margin-left: 0; 
+      text-align: center; 
+      width: 100%;
     }
   
     .custom-nav-link {
-      margin-right: 0; /* Elimina el margen derecho en móviles */
-      display: block; /* Hace que cada enlace sea un bloque */
-      margin-bottom: 10px; /* Añade un margen inferior para separar los enlaces */
+      margin-right: 0; 
+      display: block; 
+      margin-bottom: 10px; 
     }
   
     .welcome-container {
