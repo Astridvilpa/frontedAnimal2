@@ -26,7 +26,9 @@ export default function Login() {
     });
   };
 
-  const loginHandler = async () => {
+  const loginHandler = async (e) => {
+    e.preventDefault();
+
     if (credentials.email.trim() === "" || credentials.password.trim() === "") {
       setErrorMsg("Todos los campos son requeridos");
       return;
@@ -64,7 +66,7 @@ export default function Login() {
     <div className="login-body">
       <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
         <Container>
-          <Navbar.Brand href="/">Tattoo Studio</Navbar.Brand>
+          <Navbar.Brand href="/">Centro de Mascotas</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
@@ -75,24 +77,26 @@ export default function Login() {
       </Navbar>
       <div className="login-container">
         <h1>Login</h1>
-        <CustomInput
-          type="email"
-          name="email"
-          placeholder="Introduce email"
-          value={credentials.email}
-          handler={inputHandler}
-        />
-        <CustomInput
-          type="password"
-          name="password"
-          placeholder="Introduce password"
-          value={credentials.password}
-          handler={inputHandler}
-        />
-        {errorMsg && <p className="error-msg">{errorMsg}</p>}
-        <button className="login-btn" onClick={loginHandler}>
-          Login
-        </button>
+        <form onSubmit={loginHandler}>
+          <CustomInput
+            type="email"
+            name="email"
+            placeholder="Introduce email"
+            value={credentials.email}
+            handler={inputHandler}
+          />
+          <CustomInput
+            type="password"
+            name="password"
+            placeholder="Introduce password"
+            value={credentials.password}
+            handler={inputHandler}
+          />
+          {errorMsg && <p className="error-msg">{errorMsg}</p>}
+          <button className="login-btn" type="submit">
+            Login
+          </button>
+        </form>
       </div>
     </div>
   );
