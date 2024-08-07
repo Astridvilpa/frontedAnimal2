@@ -2,10 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import "./Register.css";
 import { useState } from "react";
-import { CustomInput } from "../../components/CustomInput";
-import { register } from "../../services/auth.services";
+import { CustomInput } from "../../components/custom_input/CustomInput";
+import { register } from "../../services/apiCall";
 import { useAuth } from "../../contexts/auth-context/AuthContext";
 import { jwtDecode } from "jwt-decode";
+
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -15,7 +16,7 @@ export default function Register() {
   const [registrationErrorMsg, setRegistrationErrorMsg] = useState("");
 
   const navigate = useNavigate();
-  const { logan } = useAuth();
+  const { logan } = useAuth(); 
 
   const inputHandler = (e) => {
     const { name, value } = e.target;
@@ -30,9 +31,27 @@ export default function Register() {
     }
   };
 
-  const registerHandler = async (e) => {
-    e.preventDefault();
+  const inputCheker = () => {
+    let message = "";
 
+    if (email.trim() === "") {
+      message += "Email is required. ";
+    }
+    if (password.trim() === "") {
+      message += "Password is required. ";
+    }
+    if (name.trim() === "") {
+      message += " name is required. ";
+    }
+
+    if (message === "") {
+      setMsg("Registration successful");
+    } else {
+      setRegistrationErrorMsg(message);
+    }
+  };
+
+  const registerHandler = async () => {
     if (email.trim() === "" || password.trim() === "" || name.trim() === "") {
       setRegistrationErrorMsg("Todos los campos son requeridos");
       return;
@@ -49,14 +68,14 @@ export default function Register() {
       if (res && res.token) {
         const userToken = {
           token: res.token,
-          decoded: jwtDecode(res.token),
+          decoded: decode(res.token),
         };
 
-        logan(userToken);
+        logan(userToken); 
 
         setMsg("Registro exitoso");
         setTimeout(() => {
-          navigate("/profile");
+          navigate("/profile"); 
         }, 1500);
       } else {
         setRegistrationErrorMsg("Error al registrarse");
@@ -70,12 +89,16 @@ export default function Register() {
     <div className="body-register">
       <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
         <Container>
-          <Navbar.Brand as={Link} to="/">Centro de Mascota</Navbar.Brand>
+          <Navbar.Brand href="/">Centro de Mascotas</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
-              <Nav.Link as={Link} to="/login">Login</Nav.Link>
+              <Nav.Link as={Link} to="/">
+                Home
+              </Nav.Link>
+              <Nav.Link as={Link} to="/login">
+                Login
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -86,7 +109,7 @@ export default function Register() {
           <CustomInput
             type="text"
             name="name"
-            placeholder="Introduce tu nombre"
+            placeholder="Introduce name"
             value={name}
             handler={inputHandler}
           />
@@ -104,10 +127,12 @@ export default function Register() {
             value={password}
             handler={inputHandler}
           />
-          <button className="register-btn" type="submit">Enviar</button>
+          <button className="register-btn" type="submit">
+            Enviar
+          </button>
         </form>
         <p className="error-message">{registrationErrorMsg}</p>
-        <p className="success-message">{msg}</p>
+        <p>{msg}</p>
       </div>
     </div>
   );

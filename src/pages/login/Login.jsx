@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import "./Login.css";
-import { CustomInput } from "../../components/CustomInput";
+import { CustomInput } from "../../components/custom_input/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { login } from "../../services/auth.services";
+import { login } from "../../services/apiCall";
 import { useAuth } from "../../contexts/auth-context/AuthContext";
 
 export default function Login() {
@@ -26,9 +26,7 @@ export default function Login() {
     });
   };
 
-  const loginHandler = async (e) => {
-    e.preventDefault();
-
+  const loginHandler = async () => {
     if (credentials.email.trim() === "" || credentials.password.trim() === "") {
       setErrorMsg("Todos los campos son requeridos");
       return;
@@ -66,7 +64,7 @@ export default function Login() {
     <div className="login-body">
       <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
         <Container>
-          <Navbar.Brand href="/">Centro de Mascotas</Navbar.Brand>
+          <Navbar.Brand href="/">Tattoo Studio</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">
@@ -77,26 +75,24 @@ export default function Login() {
       </Navbar>
       <div className="login-container">
         <h1>Login</h1>
-        <form onSubmit={loginHandler}>
-          <CustomInput
-            type="email"
-            name="email"
-            placeholder="Introduce email"
-            value={credentials.email}
-            handler={inputHandler}
-          />
-          <CustomInput
-            type="password"
-            name="password"
-            placeholder="Introduce password"
-            value={credentials.password}
-            handler={inputHandler}
-          />
-          {errorMsg && <p className="error-msg">{errorMsg}</p>}
-          <button className="login-btn" type="submit">
-            Login
-          </button>
-        </form>
+        <CustomInput
+          type="email"
+          name="email"
+          placeholder="Introduce email"
+          value={credentials.email}
+          handler={inputHandler}
+        />
+        <CustomInput
+          type="password"
+          name="password"
+          placeholder="Introduce password"
+          value={credentials.password}
+          handler={inputHandler}
+        />
+        {errorMsg && <p className="error-msg">{errorMsg}</p>}
+        <button className="login-btn" onClick={loginHandler}>
+          Login
+        </button>
       </div>
     </div>
   );
