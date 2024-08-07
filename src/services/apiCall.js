@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:4000/api/";
+const BASE_URL = "http://localhost:4000/api";
 
 export const login = async (credentials) => {
     const options = {
@@ -44,3 +44,4 @@ export const login = async (credentials) => {
       console.log(error, "No Registrado");
     }
   };
+

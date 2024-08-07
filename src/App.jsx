@@ -7,7 +7,7 @@ import Galeria from './pages/galeria/Galeria'
 import Veterinarios from './pages/veterinarios/Veterinarios'
 import Register from './pages/register/Register'
 import Login from './pages/login/Login'
-import Profile from './pages/profile/Profile'
+// import Profile from './pages/profile/Profile'
 
 function App() {
 
@@ -20,7 +20,7 @@ function App() {
  <Route path='veterinarios' element={<Veterinarios />} />
  <Route path='register' element={<Register />} />
  <Route path='login' element={<Login />} />
- <Route path='profile' element={<Profile />} />
+ {/* <Route path='profile' element={<Profile />} /> */}
 
 
     </Routes>
