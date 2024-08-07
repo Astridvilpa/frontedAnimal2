@@ -23,7 +23,6 @@ export const createAppointment = async (appointmentData, token) => {
 };
 
 export const getUserAppointments = async (userId, token) => {
-  console.log(userId, token)
   const options = {
     method: "GET",
     headers: {
@@ -119,3 +118,4 @@ export const getAllServices = async (token) => {
     return { success: false, message: "Error fetching services", error };
   }
 };
+

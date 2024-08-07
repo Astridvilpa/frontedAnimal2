@@ -78,3 +78,4 @@ export const deleteVeterinarioById = async (id, token) => {
     return { success: false, message: error.message };
   }
 };
+

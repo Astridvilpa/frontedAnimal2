@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:4000/api/";
+const BASE_URL = "http://localhost:4000/api";
 
 export const getProfile = async (token) => {
   const options = {
@@ -10,15 +10,17 @@ export const getProfile = async (token) => {
   };
 
   try {
-    const response = await fetch(`${BASE_URL}users/profile`, options);
+    const response = await fetch(`${BASE_URL}/users/profile`, options);
+    if (!response.ok) {
+      throw new Error('Error al recuperar el perfil');
+    }
     const data = await response.json();
-
-    return data;
+    return { success: true, data };
   } catch (error) {
-    console.log(error, "Error al recuperar mi perfil");
+    console.log(error);
+    return { success: false, message: error.message };
   }
 };
-
 
 export const getAllUsers = async (token) => {
   const options = {
@@ -31,18 +33,18 @@ export const getAllUsers = async (token) => {
 
   try {
     const response = await fetch(`${BASE_URL}/users`, options);
+    if (!response.ok) {
+      throw new Error('Error al obtener usuarios');
+    }
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);
+    return { success: false, message: error.message };
   }
 };
 
-
-
 export const updateProfile = async (data, token) => {
-  console.log(data, token, "somos data y token en updateProfile");
   const options = {
     method: "PUT",
     headers: {
@@ -54,19 +56,18 @@ export const updateProfile = async (data, token) => {
 
   try {
     const response = await fetch(`${BASE_URL}/users/profile`, options);
-    const data = response.json();
-    console.log(data);
-    return data;
+    if (!response.ok) {
+      throw new Error('Error al actualizar el perfil');
+    }
+    const responseData = await response.json();
+    return responseData;
   } catch (error) {
     console.log(error);
-    return error.message;
+    return { success: false, message: error.message };
   }
 };
 
-
-
 export const updateUserById = async (data, token) => {
-  console.log(data, token, "data y token en updateUserById");
   const options = {
     method: "PUT",
     headers: {
@@ -78,8 +79,10 @@ export const updateUserById = async (data, token) => {
 
   try {
     const response = await fetch(`${BASE_URL}/users/${data.id}`, options);
+    if (!response.ok) {
+      throw new Error('Error al actualizar el usuario');
+    }
     const responseData = await response.json();
-    console.log(responseData);
     return responseData;
   } catch (error) {
     console.log(error);
@@ -88,7 +91,6 @@ export const updateUserById = async (data, token) => {
 };
 
 export const deleteUserById = async (id, token) => {
-  console.log(id, token, "data y token en deleteUserById");
   const options = {
     method: "DELETE",
     headers: {
@@ -99,11 +101,14 @@ export const deleteUserById = async (id, token) => {
 
   try {
     const response = await fetch(`${BASE_URL}/users/${id}`, options);
+    if (!response.ok) {
+      throw new Error('Error al eliminar el usuario');
+    }
     const responseData = await response.json();
-    console.log(responseData);
     return responseData;
   } catch (error) {
     console.log(error);
     return { success: false, message: error.message };
   }
 };
+
