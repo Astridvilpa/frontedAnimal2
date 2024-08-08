@@ -1,41 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Nav, Navbar, NavDropdown, Alert, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import ProfileForm from "../../components/user_profile/ProfileForm";
 import UserListContainer from "../../components/user_profile/UserListContainer";
 import VeterinarioListContainer from "../../components/user_profile/VeterinarioListContainer";
 import AppointmentListContainer from "../../components/user_profile/AppointmentListContainer";
-import "./UserProfile.css";
 import { useAuth } from "../../contexts/auth-context/AuthContext";
-import { getProfile } from "../../services/userCall"; // Asegúrate de que esta línea esté presente y correcta
+import { getProfile } from "../../services/userCall";
+import "./UserProfile.css";
 
-export default function UserProfile({ isAdmin }) {
+const UserProfile = ({ isAdmin }) => {
+  const { userToken, logout } = useAuth();
   const [profileData, setProfileData] = useState(null);
   const [error, setError] = useState(null);
   const [showSection, setShowSection] = useState('');
   const navigate = useNavigate();
-  const { userToken, logout } = useAuth();
 
   useEffect(() => {
-    const token = userToken?.token;
-
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
     const fetchProfile = async () => {
+      if (!userToken) {
+        navigate("/login");
+        return;
+      }
       try {
-        const profileRes = await getProfile(token);
-
-        if (profileRes.success) {
-          setProfileData(profileRes.data);
+        const response = await getProfile(userToken.token);
+        if (response.success) {
+          setProfileData(response.data);
         } else {
-          console.error("Error al recuperar los datos del perfil:", profileRes.message);
+          console.error("Error fetching profile data:", response.message);
         }
-      } catch (err) {
-        console.error("Fetch error:", err);
-        setError("Error al obtener datos.");
+      } catch (error) {
+        console.error("Fetch error:", error);
+        setError("Error fetching data.");
       }
     };
 
@@ -69,7 +65,8 @@ export default function UserProfile({ isAdmin }) {
                   <Nav.Link onClick={() => setShowSection('appointments')}>Citas</Nav.Link>
                 </>
               )}
-              <Nav.Link as={Link} to="/">Ver Servicios</Nav.Link>
+            
+              <Nav.Link onClick={() => navigate("/pets")}>Mis Mascotas</Nav.Link>
               {!isAdmin && (
                 <>
                   <Nav.Link as={Link} to="/galeria">Galería</Nav.Link>
@@ -93,9 +90,7 @@ export default function UserProfile({ isAdmin }) {
         {showSection === 'profile' && <ProfileForm profileData={profileData} setProfileData={setProfileData} />}
         {showSection === 'users' && <UserListContainer isAdmin={isAdmin} />}
         {showSection === 'veterinarios' && <VeterinarioListContainer isAdmin={isAdmin} />}
-        {showSection === 'appointments' && (
-          <AppointmentListContainer isAdmin={isAdmin} userId={profileData.id} />
-        )}
+        {showSection === 'appointments' && <AppointmentListContainer isAdmin={isAdmin} userId={profileData.id} />}
         {!showSection && (
           <Row className="justify-content-center">
             <h1>Bienvenido, {profileData.name}!</h1>
@@ -104,4 +99,6 @@ export default function UserProfile({ isAdmin }) {
       </Container>
     </div>
   );
-}
+};
+
+export default UserProfile;

@@ -12,6 +12,8 @@ import Galeria from "./pages/galeria/Galeria";
 import Veterinarios from "./pages/veterinarios/Veterinarios";
 import Appointment from "./pages/appointments/Appointments"
 import UserProfile from "./pages/user_profile/UserProfile";
+import PetListContainer from "./components/user_profile/PetListContainer";
+
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
       <Route path="veterinarios" element={<Veterinarios />} />
       <Route path="appointment" element={<Appointment />} />
       <Route path="user_profile" element={<UserProfile />} />
+      <Route path="pets" element={<PetListContainer />} />
+      
     </Routes>
   );
 }
