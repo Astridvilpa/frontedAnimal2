@@ -59,6 +59,28 @@ export const getPetById = async (id, token) => {
   }
 };
 
+export const getUserPets = async (token) => {
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const response = await fetch(`${BASE_URL}/pets`, options);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching user pets:", error);
+    return { success: false, message: error.message };
+  }
+};
+
+
+
+
 export const updatePetById = async (data, token) => {
     const options = {
       method: "PUT",
