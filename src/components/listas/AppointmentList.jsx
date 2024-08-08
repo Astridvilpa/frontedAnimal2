@@ -3,12 +3,13 @@ import { Card, Button, Form } from "react-bootstrap";
 import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
 
 const AppointmentList = ({
-  appointments,
-  services,
-  veterinarios,
+  appointments = [], // Asegurando que appointments sea un array
+  services = [], // Asegurando que services sea un array
+  veterinarios = [], // Asegurando que veterinarios sea un array
+  pets = [], // Asegurando que pets sea un array
   handleEditAppointmentClick,
   handleDeleteAppointmentClick,
-  newAppointment,
+  newAppointment = {}, // Asegurando que newAppointment sea un objeto
   handleEditAppointmentChange,
   handleEditAppointmentSubmit,
   handleCreateAppointment,
@@ -27,10 +28,12 @@ const AppointmentList = ({
               <BsFillTrash3Fill />
             </Button>
           </Card.Title>
-          <Card.Text>ID de Usuario: {appointment.user.id}</Card.Text>
-          <Card.Text>Nombre: {appointment.user.first_name} {appointment.user.last_name}</Card.Text>
-          <Card.Text>Servicio: {appointment.service ? appointment.service.name : "No asignado"}</Card.Text>
-          <Card.Text>Veterinario: {appointment.veterinario ? appointment.veterinario.name : "No asignado"}</Card.Text>
+          <Card.Text>ID de Usuario: {appointment.user?.id}</Card.Text>
+          <Card.Text>Nombre: {appointment.user?.name} {appointment.user?.lastName}</Card.Text>
+          <Card.Text>Tipo de Cita: {appointment.type}</Card.Text>
+          <Card.Text>Servicio: {appointment.service?.name || "No asignado"}</Card.Text>
+          <Card.Text>Veterinario: {appointment.veterinario?.name || "No asignado"}</Card.Text>
+          <Card.Text>Mascota: {appointment.pet?.name || "No asignado"}</Card.Text>
         </Card.Body>
       </Card>
     ))}
@@ -41,7 +44,7 @@ const AppointmentList = ({
         <Form.Control
           type="text"
           name="type"
-          value={newAppointment.type}
+          value={newAppointment.type || ''}
           onChange={handleEditAppointmentChange}
         />
       </Form.Group>
@@ -50,7 +53,7 @@ const AppointmentList = ({
         <Form.Control
           type="datetime-local"
           name="date"
-          value={newAppointment.date}
+          value={newAppointment.date || ''}
           onChange={handleEditAppointmentChange}
         />
       </Form.Group>
@@ -59,7 +62,7 @@ const AppointmentList = ({
         <Form.Control
           as="select"
           name="service_id"
-          value={newAppointment.service_id}
+          value={newAppointment.service_id || ''}
           onChange={handleEditAppointmentChange}
         >
           <option value="">Seleccionar Servicio</option>
@@ -75,13 +78,29 @@ const AppointmentList = ({
         <Form.Control
           as="select"
           name="veterinario_id"
-          value={newAppointment.veterinario_id}
+          value={newAppointment.veterinario_id || ''}
           onChange={handleEditAppointmentChange}
         >
           <option value="">Seleccionar Veterinario</option>
           {veterinarios.map((veterinario) => (
             <option key={veterinario.id} value={veterinario.id}>
               {veterinario.name}
+            </option>
+          ))}
+        </Form.Control>
+      </Form.Group>
+      <Form.Group controlId="formPetId">
+        <Form.Label>Mascota</Form.Label>
+        <Form.Control
+          as="select"
+          name="pet_id"
+          value={newAppointment.pet_id || ''}
+          onChange={handleEditAppointmentChange}
+        >
+          <option value="">Seleccionar Mascota</option>
+          {pets.map((pet) => (
+            <option key={pet.id} value={pet.id}>
+              {pet.name}
             </option>
           ))}
         </Form.Control>
