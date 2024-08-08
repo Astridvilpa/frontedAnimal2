@@ -6,8 +6,10 @@ import { getUserPets } from "../../services/petCall";
 import AppointmentList from "../listas/AppointmentList";
 import { useAuth } from "../../contexts/auth-context/AuthContext";
 
-const AppointmentListContainer = ({ isAdmin, userId }) => {
+const AppointmentListContainer = ({ isAdmin }) => {
   const { userToken } = useAuth();
+  const userId = userToken?.decoded?.userId;
+
   const [appointments, setAppointments] = useState([]);
   const [services, setServices] = useState([]);
   const [veterinarios, setVeterinarios] = useState([]);
@@ -18,6 +20,7 @@ const AppointmentListContainer = ({ isAdmin, userId }) => {
     service_id: "",
     veterinario_id: "",
     pet_id: "",
+    user_id: userId,
   });
   const [editingAppointment, setEditingAppointment] = useState(null);
 
@@ -27,7 +30,7 @@ const AppointmentListContainer = ({ isAdmin, userId }) => {
         isAdmin ? getAllAppointments(userToken.token) : getUserAppointments(userId, userToken.token),
         getAllServices(userToken.token),
         getAllVeterinarios(userToken.token),
-        getUserPets(userToken.token), // Llamada a la función para obtener las mascotas
+        getUserPets(userToken.token),
       ]);
 
       if (appointmentsRes.success) setAppointments(appointmentsRes.data);
@@ -47,11 +50,34 @@ const AppointmentListContainer = ({ isAdmin, userId }) => {
 
   const handleCreateAppointment = async (e) => {
     e.preventDefault();
-    const response = await createAppointment(newAppointment, userToken.token);
+    const appointmentData = { ...newAppointment, user_id: userId };
+
+    // Verificación de los campos requeridos
+    const requiredFields = ['type', 'date', 'service_id', 'veterinario_id', 'pet_id', 'user_id'];
+    const missingFields = requiredFields.filter(field => !appointmentData[field]);
+    if (missingFields.length > 0) {
+      console.error(`Faltan campos requeridos: ${missingFields.join(', ')}`);
+      return;
+    }
+
+    // Log para depuración
+    console.log("Creating appointment with data:", appointmentData);
+
+    const response = await createAppointment(appointmentData, userToken.token);
     if (response.success) {
       setAppointments([...appointments, response.data]);
-      setNewAppointment({ type: "", date: "", service_id: "", veterinario_id: "", pet_id: "" });
-    } else console.error("Error al crear la cita:", response.message);
+      setNewAppointment({
+        type: "",
+        date: "",
+        service_id: "",
+        veterinario_id: "",
+        pet_id: "",
+        user_id: userId,
+      });
+    } else {
+      console.error("Error al crear la cita:", response.message);
+      console.error("Detalles del error:", response.error);
+    }
   };
 
   const handleEditAppointmentClick = (appointment) => {
@@ -61,7 +87,8 @@ const AppointmentListContainer = ({ isAdmin, userId }) => {
       date: appointment.date,
       service_id: appointment.service_id || "",
       veterinario_id: appointment.veterinario_id || "",
-      pet_id: appointment.pet_id || "", // Asegurando que pet_id esté presente
+      pet_id: appointment.pet_id || "",
+      user_id: userId,
     });
   };
 
@@ -69,11 +96,14 @@ const AppointmentListContainer = ({ isAdmin, userId }) => {
 
   const handleEditAppointmentSubmit = async (e) => {
     e.preventDefault();
-    const response = await updateAppointmentById({ id: editingAppointment, ...newAppointment }, userToken.token);
+    const appointmentData = { id: editingAppointment, ...newAppointment, user_id: userId };
+    const response = await updateAppointmentById(appointmentData, userToken.token);
     if (response.success) {
       setAppointments(appointments.map((appointment) => (appointment.id === editingAppointment ? { ...appointment, ...newAppointment } : appointment)));
       setEditingAppointment(null);
-    } else console.error("Error al actualizar la cita:", response.message);
+    } else {
+      console.error("Error al actualizar la cita:", response.message);
+    }
   };
 
   const handleDeleteAppointmentClick = async (appointmentId) => {
@@ -87,7 +117,7 @@ const AppointmentListContainer = ({ isAdmin, userId }) => {
       appointments={appointments}
       services={services}
       veterinarios={veterinarios}
-      pets={pets} // Pasamos las mascotas al componente
+      pets={pets}
       handleEditAppointmentClick={handleEditAppointmentClick}
       handleDeleteAppointmentClick={handleDeleteAppointmentClick}
       newAppointment={newAppointment}

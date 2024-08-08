@@ -9,11 +9,12 @@ export const createAppointment = async (appointmentData, token) => {
     },
     body: JSON.stringify(appointmentData),
   };
+
   try {
     const response = await fetch(`${BASE_URL}/appointments`, options);
-    const responseData = await response.json();
-    console.log("Appointment creation response:", responseData);
-    return responseData;
+    const data = await response.json();
+    console.log("Appointment creation response:", data); // Agregar log para depuración
+    return data;
   } catch (error) {
     console.error("Error creating appointment:", error);
     return { success: false, message: error.message };
