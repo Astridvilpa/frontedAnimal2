@@ -11,7 +11,8 @@ const AppointmentListContainer = ({ isAdmin, userId }) => {
   const [services, setServices] = useState([]);
   const [veterinarios, setVeterinarios] = useState([]);
   const [newAppointment, setNewAppointment] = useState({
-    appointment_date: "",
+    type: "",
+    date: "",
     service_id: "",
     veterinario_id: "",
   });
@@ -42,14 +43,15 @@ const AppointmentListContainer = ({ isAdmin, userId }) => {
     const response = await createAppointment(newAppointment, userToken.token);
     if (response.success) {
       setAppointments([...appointments, response.data]);
-      setNewAppointment({ appointment_date: "", service_id: "", veterinario_id: "" });
+      setNewAppointment({ type: "", date: "", service_id: "", veterinario_id: "" });
     } else console.error("Error al crear la cita:", response.message);
   };
 
   const handleEditAppointmentClick = (appointment) => {
     setEditingAppointment(appointment.id);
     setNewAppointment({
-      appointment_date: appointment.appointment_date,
+      type: appointment.type,
+      date: appointment.date,
       service_id: appointment.service_id || "",
       veterinario_id: appointment.veterinario_id || "",
     });

@@ -9,8 +9,6 @@ export const createAppointment = async (appointmentData, token) => {
     },
     body: JSON.stringify(appointmentData),
   };
-  console.log("Token:", token);
-  console.log("BASE_URL:", BASE_URL);
   try {
     const response = await fetch(`${BASE_URL}/appointments`, options);
     const responseData = await response.json();
@@ -32,7 +30,9 @@ export const getUserAppointments = async (userId, token) => {
   };
 
   try {
-    const response = await fetch(`${BASE_URL}/appointments/user/${userId}`, options);
+    console.log(`Fetching from ${BASE_URL}/appointments/user/${userId}`);
+    console.log("Request options:", options);
+    const response = await fetch(`${BASE_URL}/appointments/user`, options);
     const responseData = await response.json();
     console.log("Get user appointments response:", responseData);
     return responseData;
@@ -95,27 +95,10 @@ export const getAllAppointments = async (token) => {
   try {
     const response = await fetch(`${BASE_URL}/appointments`, options);
     const data = await response.json();
-    console.log(data);
+    console.log("Get all appointments response:", data);
     return data;
   } catch (error) {
-    console.log(error);
+    console.log("Error fetching all appointments:", error);
+    return { success: false, message: error.message };
   }
 };
-
-
-export const getAllServices = async (token) => {
-  try {
-    const response = await fetch("http://localhost:4000/api/services", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Fetch error:", error);
-    return { success: false, message: "Error fetching services", error };
-  }
-};
-

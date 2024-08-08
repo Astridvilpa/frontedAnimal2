@@ -19,7 +19,7 @@ const AppointmentList = ({
       <Card key={appointment.id} className="mb-4">
         <Card.Body>
           <Card.Title>
-            {new Date(appointment.appointment_date).toLocaleString()}
+            {new Date(appointment.date).toLocaleString()}
             <Button className="ms-2" onClick={() => handleEditAppointmentClick(appointment)}>
               <BsFillPencilFill />
             </Button>
@@ -29,19 +29,28 @@ const AppointmentList = ({
           </Card.Title>
           <Card.Text>ID de Usuario: {appointment.user.id}</Card.Text>
           <Card.Text>Nombre: {appointment.user.first_name} {appointment.user.last_name}</Card.Text>
-          <Card.Text>Servicio: {appointment.service ? appointment.service.service_name : "No asignado"}</Card.Text>
+          <Card.Text>Servicio: {appointment.service ? appointment.service.name : "No asignado"}</Card.Text>
           <Card.Text>Veterinario: {appointment.veterinario ? appointment.veterinario.name : "No asignado"}</Card.Text>
         </Card.Body>
       </Card>
     ))}
     <h3>Crear Nueva Cita</h3>
     <Form onSubmit={handleCreateAppointment}>
+      <Form.Group controlId="formType">
+        <Form.Label>Tipo</Form.Label>
+        <Form.Control
+          type="text"
+          name="type"
+          value={newAppointment.type}
+          onChange={handleEditAppointmentChange}
+        />
+      </Form.Group>
       <Form.Group controlId="formAppointmentDate">
         <Form.Label>Fecha y Hora</Form.Label>
         <Form.Control
           type="datetime-local"
-          name="appointment_date"
-          value={newAppointment.appointment_date}
+          name="date"
+          value={newAppointment.date}
           onChange={handleEditAppointmentChange}
         />
       </Form.Group>
@@ -56,7 +65,7 @@ const AppointmentList = ({
           <option value="">Seleccionar Servicio</option>
           {services.map((service) => (
             <option key={service.id} value={service.id}>
-              {service.service_name}
+              {service.name}
             </option>
           ))}
         </Form.Control>
