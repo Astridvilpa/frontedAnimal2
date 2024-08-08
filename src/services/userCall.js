@@ -111,4 +111,3 @@ export const deleteUserById = async (id, token) => {
     return { success: false, message: error.message };
   }
 };
-

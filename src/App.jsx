@@ -11,6 +11,7 @@ import Centro from "./pages/centro/Centro";
 import Galeria from "./pages/galeria/Galeria";
 import Veterinarios from "./pages/veterinarios/Veterinarios";
 import Appointment from "./pages/appointments/Appointments"
+import UserProfile from "./pages/user_profile/UserProfile";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="galeria" element={<Galeria />} />
       <Route path="veterinarios" element={<Veterinarios />} />
       <Route path="appointment" element={<Appointment />} />
+      <Route path="user_profile" element={<UserProfile />} />
     </Routes>
   );
 }
