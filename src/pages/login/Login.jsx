@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import "./Login.css";
 import { CustomInput } from "../../components/custom_input/CustomInput";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { login } from "../../services/apiCall";
 import { useAuth } from "../../contexts/auth-context/AuthContext";
@@ -14,9 +14,7 @@ export default function Login() {
   });
 
   const { logan } = useAuth(); 
-
   const [errorMsg, setErrorMsg] = useState("");
-
   const navigate = useNavigate();
 
   const inputHandler = (e) => {
@@ -62,13 +60,17 @@ export default function Login() {
 
   return (
     <div className="login-body">
-      <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
+      <Navbar expand="lg" variant="dark" className="custom-navbar">
         <Container>
-          <Navbar.Brand href="/">Centro de Mascota</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Brand href="/" className="custom-navbar-brand">Centro de Mascotas</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" className="custom-navbar-toggler" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
-              <Nav.Link href="/">Home</Nav.Link>
+            <Nav className="custom-navbar-nav">
+              <Nav.Link as={Link} to="/Centro" className="custom-nav-link">Centro</Nav.Link>
+              <Nav.Link as={Link} to="/Veterinarios" className="custom-nav-link">Veterinarios</Nav.Link>
+              <Nav.Link as={Link} to="/Galeria" className="custom-nav-link">Galería</Nav.Link>
+              <Nav.Link as={Link} to="/Register" className="custom-nav-link">Register</Nav.Link>
+              <Nav.Link as={Link} to="/Login" className="custom-nav-link">Login</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -97,4 +99,3 @@ export default function Login() {
     </div>
   );
 }
-

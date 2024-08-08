@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import "./Register.css";
 import axios from 'axios';
 
@@ -29,6 +30,21 @@ const Register = () => {
 
   return (
     <div className="body-register">
+      <Navbar expand="lg" variant="dark" className="custom-navbar">
+        <Container>
+          <Navbar.Brand href="/" className="custom-navbar-brand">Centro de Mascotas</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" className="custom-navbar-toggler" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="custom-navbar-nav">
+              <Nav.Link as={Link} to="/Centro" className="custom-nav-link">Centro</Nav.Link>
+              <Nav.Link as={Link} to="/Veterinarios" className="custom-nav-link">Veterinarios</Nav.Link>
+              <Nav.Link as={Link} to="/Galeria" className="custom-nav-link">Galeria</Nav.Link>
+              <Nav.Link as={Link} to="/Register" className="custom-nav-link">Register</Nav.Link>
+              <Nav.Link as={Link} to="/Login" className="custom-nav-link">Login</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
       <div className="register-container">
         <form className="register-form" onSubmit={handleRegister}>
           <h2>Regístrate</h2>
