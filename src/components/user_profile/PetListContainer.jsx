@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Container, Form, Button, Alert, Navbar, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container, Form, Button, Alert, Navbar, Nav, NavDropdown, Card, Row, Col } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { getAllPets, createPet, updatePetById, deletePetById } from "../../services/petCall";
 import { useAuth } from "../../contexts/auth-context/AuthContext";
 
 const PetListContainer = () => {
-  const { userToken } = useAuth();
+  const { userToken, logout } = useAuth();
   const [pets, setPets] = useState([]);
   const [petName, setPetName] = useState("");
   const [petType, setPetType] = useState("");
   const [selectedPet, setSelectedPet] = useState(null);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const fetchPets = async () => {
     try {
@@ -34,7 +35,6 @@ const PetListContainer = () => {
     const newPet = {
       name: petName,
       type: petType,
-      user_id: userToken.userId,
     };
     try {
       const response = await createPet(newPet, userToken.token);
@@ -63,7 +63,6 @@ const PetListContainer = () => {
       id: selectedPet.id,
       name: petName,
       type: petType,
-      user_id: userToken.userId,
     };
     try {
       const response = await updatePetById(updatedPetData, userToken.token);
@@ -93,33 +92,55 @@ const PetListContainer = () => {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    localStorage.removeItem("userToken");
+    navigate("/login");
+  };
+
+  const handleEditProfile = () => {
+    navigate("/profile");
+  };
+
   return (
     <Container>
-      <Navbar bg="dark" variant="dark">
+      <Navbar bg="dark" variant="dark" expand="lg">
         <Container>
           <Navbar.Brand as={Link} to="/">Centro de Mascota</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/services">Ver Servicios</Nav.Link>
-            <Nav.Link as={Link} to="/pets">Mis Mascotas</Nav.Link>
-            <Nav.Link as={Link} to="/gallery">Galería</Nav.Link>
-            <Nav.Link as={Link} to="/appointments">Mis Citas</Nav.Link>
-          </Nav>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/services">Ver Servicios</Nav.Link>
+              <Nav.Link as={Link} to="/pets">Mis Mascotas</Nav.Link>
+              <Nav.Link as={Link} to="/gallery">Galería</Nav.Link>
+              <Nav.Link as={Link} to="/appointments">Mis Citas</Nav.Link>
+            </Nav>
+            <Nav>
+              <NavDropdown title="Perfil" id="basic-nav-dropdown">
+                <NavDropdown.Item onClick={handleEditProfile}>Editar Perfil</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={handleLogout}>Cerrar Sesión</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
       <h1>Lista de Mascotas</h1>
       {error && <Alert variant="danger">{error}</Alert>}
-      <ul>
+      <Row>
         {pets.map((pet) => (
-          <li key={pet.id}>
-            <div>
-              <strong>{pet.name}</strong>
-              <p>Tipo: {pet.type}</p>
-              <Button variant="primary" onClick={() => handleEditPetClick(pet)}>Editar</Button>
-              <Button variant="danger" onClick={() => handleDeletePet(pet.id)}>Eliminar</Button>
-            </div>
-          </li>
+          <Col md={4} className="mb-3" key={pet.id}>
+            <Card>
+              <Card.Body>
+                <Card.Title>{pet.name}</Card.Title>
+                <Card.Text>Tipo: {pet.type}</Card.Text>
+                <Button variant="primary" onClick={() => handleEditPetClick(pet)}>Editar</Button>
+                <Button variant="danger" className="ms-2" onClick={() => handleDeletePet(pet.id)}>Eliminar</Button>
+              </Card.Body>
+            </Card>
+          </Col>
         ))}
-      </ul>
+      </Row>
       <h2>{selectedPet ? "Editar Mascota" : "Crear Nueva Mascota"}</h2>
       <Form onSubmit={selectedPet ? handleEditPetSubmit : handleCreatePet}>
         <Form.Group>
@@ -138,7 +159,9 @@ const PetListContainer = () => {
             onChange={(e) => setPetType(e.target.value)}
           />
         </Form.Group>
-        <Button type="submit">{selectedPet ? "Guardar Cambios" : "Crear Mascota"}</Button>
+        <Button type="submit" className="mt-3">
+          {selectedPet ? "Guardar Cambios" : "Crear Mascota"}
+        </Button>
       </Form>
     </Container>
   );
