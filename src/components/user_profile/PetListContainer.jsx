@@ -3,6 +3,7 @@ import { Container, Form, Button, Alert, Navbar, Nav, NavDropdown, Card, Row, Co
 import { Link, useNavigate } from "react-router-dom";
 import { getAllPets, createPet, updatePetById, deletePetById } from "../../services/petCall";
 import { useAuth } from "../../contexts/auth-context/AuthContext";
+import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
 
 const PetListContainer = () => {
   const { userToken, logout } = useAuth();
@@ -134,8 +135,12 @@ const PetListContainer = () => {
               <Card.Body>
                 <Card.Title>{pet.name}</Card.Title>
                 <Card.Text>Tipo: {pet.type}</Card.Text>
-                <Button variant="primary" onClick={() => handleEditPetClick(pet)}>Editar</Button>
-                <Button variant="danger" className="ms-2" onClick={() => handleDeletePet(pet.id)}>Eliminar</Button>
+                <Button variant="primary" className="me-2" onClick={() => handleEditPetClick(pet)}>
+                  <BsFillPencilFill /> Editar
+                </Button>
+                <Button variant="danger" onClick={() => handleDeletePet(pet.id)}>
+                  <BsFillTrash3Fill /> Eliminar
+                </Button>
               </Card.Body>
             </Card>
           </Col>

@@ -1,85 +1,66 @@
-const BASE_URL = "http://localhost:4000/api/";
+const BASE_URL = "http://localhost:4000/api";
+
+export const getAllServices = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/services`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching services:", error);
+    return { success: false, message: "Error fetching services", error };
+  }
+};
 
 export const createService = async (serviceData, token) => {
-    const options = {
+  try {
+    const response = await fetch(`${BASE_URL}/services`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(serviceData),
-    };
-  
-    try {
-      const response = await fetch(`${BASE_URL}/services`, options);
-      const responseData = await response.json();
-      return responseData;
-    } catch (error) {
-      console.log(error);
-      return { success: false, message: error.message };
-    }
-  };
-  
-  
-  export const getAllServices = async (token) => {
-    const options = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-  
-    try {
-      const response = await fetch(`${BASE_URL}/services`, options);
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error creating service:", error);
+    return { success: false, message: "Error creating service", error };
+  }
+};
 
-  export const updateServiceId = async (data, token) => {
-    console.log(data, token, "data y token en updateServiceById");
-    const options = {
+export const updateServiceById = async (serviceData, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/services/${serviceData.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(data),
-    };
-  
-    try {
-      const response = await fetch(`${BASE_URL}/services/${data.id}`, options);
-      const responseData = await response.json();
-      console.log(responseData);
-      return responseData;
-    } catch (error) {
-      console.log(error);
-      return { success: false, message: error.message };
-    }
-  };
+      body: JSON.stringify(serviceData),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating service:", error);
+    return { success: false, message: "Error updating service", error };
+  }
+};
 
-  export const deleteServiceById = async (id, token) => {
-    const options = {
+export const deleteServiceById = async (id, token) => {
+  try {
+    const response = await fetch(`${BASE_URL}/services/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    };
-  
-    try {
-      const response = await fetch(`${BASE_URL}/services/${id}`, options);
-      const responseData = await response.json();
-      return responseData;
-    } catch (error) {
-      console.log(error);
-      return { success: false, message: error.message };
-    }
-  };
-  
-
-  
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error deleting service:", error);
+    return { success: false, message: "Error deleting service", error };
+  }
+};

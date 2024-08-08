@@ -5,6 +5,7 @@ import ProfileForm from "../../components/user_profile/ProfileForm";
 import UserListContainer from "../../components/user_profile/UserListContainer";
 import VeterinarioListContainer from "../../components/user_profile/VeterinarioListContainer";
 import AppointmentListContainer from "../../components/user_profile/AppointmentListContainer";
+import ServiceListContainer from "../../components/user_profile/ServiceListContainer";
 import { useAuth } from "../../contexts/auth-context/AuthContext";
 import { getProfile } from "../../services/userCall";
 import "./UserProfile.css";
@@ -63,12 +64,14 @@ const UserProfile = ({ isAdmin }) => {
                   <Nav.Link onClick={() => setShowSection('users')}>Usuarios</Nav.Link>
                   <Nav.Link onClick={() => setShowSection('veterinarios')}>Veterinarios</Nav.Link>
                   <Nav.Link onClick={() => setShowSection('appointments')}>Citas</Nav.Link>
+                  <Nav.Link onClick={() => setShowSection('services')}>Servicios</Nav.Link>
                 </>
               )}
             
               <Nav.Link onClick={() => navigate("/pets")}>Mis Mascotas</Nav.Link>
               {!isAdmin && (
                 <>
+                  <Nav.Link onClick={() => setShowSection('services')}>Ver Servicios</Nav.Link>
                   <Nav.Link as={Link} to="/galeria">Galería</Nav.Link>
                   <Nav.Link onClick={() => setShowSection('appointments')}>Mis Citas</Nav.Link>
                 </>
@@ -91,6 +94,7 @@ const UserProfile = ({ isAdmin }) => {
         {showSection === 'users' && <UserListContainer isAdmin={isAdmin} />}
         {showSection === 'veterinarios' && <VeterinarioListContainer isAdmin={isAdmin} />}
         {showSection === 'appointments' && <AppointmentListContainer isAdmin={isAdmin} userId={profileData.id} />}
+        {showSection === 'services' && <ServiceListContainer isAdmin={isAdmin} />}
         {!showSection && (
           <Row className="justify-content-center">
             <h1>Bienvenido, {profileData.name}!</h1>

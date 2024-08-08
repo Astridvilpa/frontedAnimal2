@@ -13,6 +13,7 @@ import Veterinarios from "./pages/veterinarios/Veterinarios";
 import Appointment from "./pages/appointments/Appointments"
 import UserProfile from "./pages/user_profile/UserProfile";
 import PetListContainer from "./components/user_profile/PetListContainer";
+import ServiceListContainer from "./components/user_profile/ServiceListContainer";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
       <Route path="appointment" element={<Appointment />} />
       <Route path="user_profile" element={<UserProfile />} />
       <Route path="pets" element={<PetListContainer />} />
+      <Route path="services" element={<ServiceListContainer />} />
       
     </Routes>
   );
