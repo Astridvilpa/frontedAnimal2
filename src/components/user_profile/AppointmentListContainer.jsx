@@ -52,7 +52,6 @@ const AppointmentListContainer = ({ isAdmin }) => {
     e.preventDefault();
     const appointmentData = { ...newAppointment, user_id: userId };
 
-    // Verificación de los campos requeridos
     const requiredFields = ['type', 'date', 'service_id', 'veterinario_id', 'pet_id', 'user_id'];
     const missingFields = requiredFields.filter(field => !appointmentData[field]);
     if (missingFields.length > 0) {
@@ -60,12 +59,16 @@ const AppointmentListContainer = ({ isAdmin }) => {
       return;
     }
 
-    // Log para depuración
     console.log("Creating appointment with data:", appointmentData);
 
     const response = await createAppointment(appointmentData, userToken.token);
     if (response.success) {
-      setAppointments([...appointments, response.data]);
+      // Aquí obtenemos la cita recién creada
+      const newAppointmentRes = await getUserAppointments(userId, userToken.token);
+      
+      // Actualizamos el estado para que incluya la nueva cita con todos los datos relacionados
+      setAppointments(newAppointmentRes.data);
+
       setNewAppointment({
         type: "",
         date: "",
@@ -99,7 +102,8 @@ const AppointmentListContainer = ({ isAdmin }) => {
     const appointmentData = { id: editingAppointment, ...newAppointment, user_id: userId };
     const response = await updateAppointmentById(appointmentData, userToken.token);
     if (response.success) {
-      setAppointments(appointments.map((appointment) => (appointment.id === editingAppointment ? { ...appointment, ...newAppointment } : appointment)));
+      const updatedAppointments = await getUserAppointments(userId, userToken.token);
+      setAppointments(updatedAppointments.data);
       setEditingAppointment(null);
     } else {
       console.error("Error al actualizar la cita:", response.message);
@@ -108,8 +112,11 @@ const AppointmentListContainer = ({ isAdmin }) => {
 
   const handleDeleteAppointmentClick = async (appointmentId) => {
     const response = await deleteAppointmentById(appointmentId, userToken.token);
-    if (response.success) setAppointments(appointments.filter((appointment) => appointment.id !== appointmentId));
-    else console.error("Error al eliminar la cita:", response.message);
+    if (response.success) {
+      setAppointments(appointments.filter((appointment) => appointment.id !== appointmentId));
+    } else {
+      console.error("Error al eliminar la cita:", response.message);
+    }
   };
 
   return (

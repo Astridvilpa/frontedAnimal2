@@ -13,7 +13,7 @@ export const createAppointment = async (appointmentData, token) => {
   try {
     const response = await fetch(`${BASE_URL}/appointments`, options);
     const data = await response.json();
-    console.log("Appointment creation response:", data); // Agregar log para depuración
+    console.log("Appointment creation response:", data); 
     return data;
   } catch (error) {
     console.error("Error creating appointment:", error);
@@ -103,3 +103,4 @@ export const getAllAppointments = async (token) => {
     return { success: false, message: error.message };
   }
 };
+

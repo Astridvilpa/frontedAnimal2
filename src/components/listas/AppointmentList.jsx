@@ -3,13 +3,13 @@ import { Card, Button, Form } from "react-bootstrap";
 import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
 
 const AppointmentList = ({
-  appointments = [], // Asegurando que appointments sea un array
-  services = [], // Asegurando que services sea un array
-  veterinarios = [], // Asegurando que veterinarios sea un array
-  pets = [], // Asegurando que pets sea un array
+  appointments = [], 
+  services = [], 
+  veterinarios = [], 
+  pets = [], 
   handleEditAppointmentClick,
   handleDeleteAppointmentClick,
-  newAppointment = {}, // Asegurando que newAppointment sea un objeto
+  newAppointment = {}, 
   handleEditAppointmentChange,
   handleEditAppointmentSubmit,
   handleCreateAppointment,
