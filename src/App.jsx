@@ -10,10 +10,10 @@ import Admin from "./pages/admin/Admin";
 import Centro from "./pages/centro/Centro";
 import Galeria from "./pages/galeria/Galeria";
 import Veterinarios from "./pages/veterinarios/Veterinarios";
-import Appointment from "./pages/appointments/Appointments"
 import UserProfile from "./pages/user_profile/UserProfile";
 import PetListContainer from "./components/user_profile/PetListContainer";
 import ServiceListContainer from "./components/user_profile/ServiceListContainer";
+import AppointmentListContainer from "./components/user_profile/AppointmentListContainer";
 
 
 function App() {
@@ -27,10 +27,11 @@ function App() {
       <Route path="centro" element={<Centro />} />
       <Route path="galeria" element={<Galeria />} />
       <Route path="veterinarios" element={<Veterinarios />} />
-      <Route path="appointment" element={<Appointment />} />
+      <Route path="appointment" element={<AppointmentListContainer />} />
       <Route path="user_profile" element={<UserProfile />} />
       <Route path="pets" element={<PetListContainer />} />
       <Route path="services" element={<ServiceListContainer />} />
+      
       
     </Routes>
   );

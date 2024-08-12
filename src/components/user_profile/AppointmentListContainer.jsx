@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Navbar, Nav, Container } from "react-bootstrap";
+import { Link } from "react-router-dom"; 
 import { getAllAppointments, getUserAppointments, createAppointment, updateAppointmentById, deleteAppointmentById } from "../../services/appointment";
 import { getAllServices } from "../../services/serviceCall";
 import { getAllVeterinarios } from "../../services/veterinariosCall";
@@ -7,7 +9,7 @@ import AppointmentList from "../listas/AppointmentList";
 import { useAuth } from "../../contexts/auth-context/AuthContext";
 
 const AppointmentListContainer = ({ isAdmin }) => {
-  const { userToken } = useAuth();
+  const { userToken, logout } = useAuth();
   const userId = userToken?.decoded?.userId;
 
   const [appointments, setAppointments] = useState([]);
@@ -84,7 +86,7 @@ const AppointmentListContainer = ({ isAdmin }) => {
     setEditingAppointment(appointment.id);
     setNewAppointment({
       type: appointment.type,
-      date: new Date(appointment.date).toISOString().slice(0, 16), // Formato compatible para el input de tipo datetime-local
+      date: new Date(appointment.date).toISOString().slice(0, 16), 
       service_id: appointment.Service_id || appointment.service_id || "",
       veterinario_id: appointment.Veterinario_id || appointment.veterinario_id || "",
       pet_id: appointment.Pet_id || appointment.pet_id || "",
@@ -106,7 +108,7 @@ const AppointmentListContainer = ({ isAdmin }) => {
     console.log("Respuesta de la actualización de la cita:", response);
 
     if (response.success) {
-      // Recargar la lista de citas para reflejar los cambios
+      
       const updatedAppointments = await getUserAppointments(userId, userToken.token);
       setAppointments(updatedAppointments.data);
       setEditingAppointment(null);
@@ -125,19 +127,42 @@ const AppointmentListContainer = ({ isAdmin }) => {
   };
 
   return (
-    <AppointmentList
-      appointments={appointments}
-      services={services}
-      veterinarios={veterinarios}
-      pets={pets}
-      handleEditAppointmentClick={handleEditAppointmentClick}
-      handleDeleteAppointmentClick={handleDeleteAppointmentClick}
-      newAppointment={newAppointment}
-      handleEditAppointmentChange={handleEditAppointmentChange}
-      handleEditAppointmentSubmit={handleEditAppointmentSubmit}
-      handleCreateAppointment={handleCreateAppointment}
-      editingAppointment={editingAppointment}  // Pasamos el estado de edición al componente hijo
-    />
+    <>
+     
+      <Navbar bg="dark" variant="dark" expand="lg">
+        <Container>
+          <Navbar.Brand as={Link} to="/">Centro de Mascota</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/profile">Perfil</Nav.Link>
+              <Nav.Link as={Link} to="/pets">Mis Mascotas</Nav.Link>
+              <Nav.Link as={Link} to="/services">Ver Servicios</Nav.Link>
+              <Nav.Link as={Link} to="/galeria">Galería</Nav.Link>
+              <Nav.Link as={Link} to="/appointment">Mis Citas</Nav.Link>
+            </Nav>
+            <Nav>
+              <Nav.Link onClick={logout}>Cerrar Sesión</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
+      
+      <AppointmentList
+        appointments={appointments}
+        services={services}
+        veterinarios={veterinarios}
+        pets={pets}
+        handleEditAppointmentClick={handleEditAppointmentClick}
+        handleDeleteAppointmentClick={handleDeleteAppointmentClick}
+        newAppointment={newAppointment}
+        handleEditAppointmentChange={handleEditAppointmentChange}
+        handleEditAppointmentSubmit={handleEditAppointmentSubmit}
+        handleCreateAppointment={handleCreateAppointment}
+        editingAppointment={editingAppointment} 
+      />
+    </>
   );
 };
 

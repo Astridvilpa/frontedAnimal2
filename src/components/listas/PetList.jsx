@@ -10,7 +10,7 @@ const PetList = ({ pets, handleEditPetClick, handleDeletePetClick }) => {
   return (
     <div>
       {pets.map((pet) => {
-        console.log("Pet data:", pet); // Agregamos un console.log para depurar
+        console.log("Pet data:", pet); 
         if (!pet || !pet.name || !pet.type) {
           return <p key={pet.id}>Datos de mascota incompletos.</p>;
         }

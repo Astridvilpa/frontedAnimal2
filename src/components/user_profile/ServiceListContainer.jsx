@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card, Button, Form, Alert, Row, Col } from "react-bootstrap";
+import { Navbar, Nav, Container, Card, Button, Form, Alert, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { getAllServices, createService, updateServiceById, deleteServiceById } from "../../services/serviceCall";
 import { useAuth } from "../../contexts/auth-context/AuthContext";
 import { BsFillPencilFill, BsFillTrash3Fill } from "react-icons/bs";
 
 const ServiceListContainer = ({ isAdmin }) => {
-  const { userToken } = useAuth();
+  const { userToken, logout } = useAuth();
   const [services, setServices] = useState([]);
   const [serviceName, setServiceName] = useState("");
   const [selectedService, setSelectedService] = useState(null);
@@ -81,49 +82,72 @@ const ServiceListContainer = ({ isAdmin }) => {
   };
 
   return (
-    <Container>
-      <h1>Lista de Servicios</h1>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Row>
-        {services.map((service) => (
-          <Col md={4} className="mb-3" key={service.id}>
-            <Card>
-              <Card.Body>
-                <Card.Title>{service.name}</Card.Title>
-                {isAdmin && (
-                  <>
-                    <Button variant="primary" className="me-2" onClick={() => handleEditServiceClick(service)}>
-                      <BsFillPencilFill /> Editar
-                    </Button>
-                    <Button variant="danger" onClick={() => handleDeleteService(service.id)}>
-                      <BsFillTrash3Fill /> Eliminar
-                    </Button>
-                  </>
-                )}
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-      {isAdmin && (
-        <>
-          <h2>{selectedService ? "Editar Servicio" : "Crear Nuevo Servicio"}</h2>
-          <Form onSubmit={selectedService ? handleEditServiceSubmit : handleCreateService}>
-            <Form.Group>
-              <Form.Label>Nombre</Form.Label>
-              <Form.Control
-                type="text"
-                value={serviceName}
-                onChange={(e) => setServiceName(e.target.value)}
-              />
-            </Form.Group>
-            <Button type="submit" className="mt-3">
-              {selectedService ? "Guardar Cambios" : "Crear Servicio"}
-            </Button>
-          </Form>
-        </>
-      )}
-    </Container>
+    <>
+      
+      <Navbar bg="dark" variant="dark" expand="lg">
+        <Container>
+          <Navbar.Brand as={Link} to="/">Centro de Mascota</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/profile">Perfil</Nav.Link>
+              <Nav.Link as={Link} to="/pets">Mis Mascotas</Nav.Link>
+              <Nav.Link as={Link} to="/services">Ver Servicios</Nav.Link>
+              <Nav.Link as={Link} to="/galeria">Galería</Nav.Link>
+              <Nav.Link as={Link} to="/appointment">Mis Citas</Nav.Link>
+            </Nav>
+            <Nav>
+              <Nav.Link onClick={logout}>Cerrar Sesión</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
+      
+      <Container>
+        <h1>Lista de Servicios</h1>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <Row>
+          {services.map((service) => (
+            <Col md={4} className="mb-3" key={service.id}>
+              <Card>
+                <Card.Body>
+                  <Card.Title>{service.name}</Card.Title>
+                  {isAdmin && (
+                    <>
+                      <Button variant="primary" className="me-2" onClick={() => handleEditServiceClick(service)}>
+                        <BsFillPencilFill /> Editar
+                      </Button>
+                      <Button variant="danger" onClick={() => handleDeleteService(service.id)}>
+                        <BsFillTrash3Fill /> Eliminar
+                      </Button>
+                    </>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+        {isAdmin && (
+          <>
+            <h2>{selectedService ? "Editar Servicio" : "Crear Nuevo Servicio"}</h2>
+            <Form onSubmit={selectedService ? handleEditServiceSubmit : handleCreateService}>
+              <Form.Group>
+                <Form.Label>Nombre</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={serviceName}
+                  onChange={(e) => setServiceName(e.target.value)}
+                />
+              </Form.Group>
+              <Button type="submit" className="mt-3">
+                {selectedService ? "Guardar Cambios" : "Crear Servicio"}
+              </Button>
+            </Form>
+          </>
+        )}
+      </Container>
+    </>
   );
 };
 

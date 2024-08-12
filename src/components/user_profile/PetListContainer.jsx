@@ -113,8 +113,8 @@ const PetListContainer = () => {
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/services">Ver Servicios</Nav.Link>
               <Nav.Link as={Link} to="/pets">Mis Mascotas</Nav.Link>
-              <Nav.Link as={Link} to="/gallery">Galería</Nav.Link>
-              <Nav.Link as={Link} to="/appointments">Mis Citas</Nav.Link>
+              <Nav.Link as={Link} to="/galeria">Galería</Nav.Link>
+              <Nav.Link as={Link} to="/appointment">Mis Citas</Nav.Link>
             </Nav>
             <Nav>
               <NavDropdown title="Perfil" id="basic-nav-dropdown">
