@@ -56,7 +56,7 @@ export const updateAppointmentById = async (data, token) => {
   try {
     const response = await fetch(`${BASE_URL}/appointments/${data.id}`, options);
     const responseData = await response.json();
-    console.log("Update appointment response:", responseData);
+    console.log("Update appointment response:", responseData); // Log para verificar la respuesta
     return responseData;
   } catch (error) {
     console.error("Error updating appointment:", error);

@@ -13,6 +13,7 @@ const AppointmentList = ({
   handleEditAppointmentChange,
   handleEditAppointmentSubmit,
   handleCreateAppointment,
+  editingAppointment,
 }) => (
   <div>
     <h3>Lista de Citas</h3>
@@ -28,87 +29,167 @@ const AppointmentList = ({
               <BsFillTrash3Fill />
             </Button>
           </Card.Title>
-          <Card.Text>ID de Usuario: {appointment.user?.id}</Card.Text>
-          <Card.Text>Nombre: {appointment.user?.name} {appointment.user?.lastName}</Card.Text>
-          <Card.Text>Tipo de Cita: {appointment.type}</Card.Text>
-          <Card.Text>Servicio: {appointment.service?.name || "No asignado"}</Card.Text>
-          <Card.Text>Veterinario: {appointment.veterinario?.name || "No asignado"}</Card.Text>
-          <Card.Text>Mascota: {appointment.pet?.name || "No asignado"}</Card.Text>
+          {editingAppointment === appointment.id ? (
+            <Form onSubmit={handleEditAppointmentSubmit}>
+              <Form.Group controlId="formType">
+                <Form.Label>Tipo</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="type"
+                  value={newAppointment.type || ''}
+                  onChange={handleEditAppointmentChange}
+                />
+              </Form.Group>
+              <Form.Group controlId="formAppointmentDate">
+                <Form.Label>Fecha y Hora</Form.Label>
+                <Form.Control
+                  type="datetime-local"
+                  name="date"
+                  value={newAppointment.date || ''}
+                  onChange={handleEditAppointmentChange}
+                />
+              </Form.Group>
+              <Form.Group controlId="formServiceId">
+                <Form.Label>Servicio</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="service_id"
+                  value={newAppointment.service_id || ''}
+                  onChange={handleEditAppointmentChange}
+                >
+                  <option value="">Seleccionar Servicio</option>
+                  {services.map((service) => (
+                    <option key={service.id} value={service.id}>
+                      {service.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formVeterinarioId">
+                <Form.Label>Veterinarios</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="veterinario_id"
+                  value={newAppointment.veterinario_id || ''}
+                  onChange={handleEditAppointmentChange}
+                >
+                  <option value="">Seleccionar Veterinario</option>
+                  {veterinarios.map((veterinario) => (
+                    <option key={veterinario.id} value={veterinario.id}>
+                      {veterinario.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formPetId">
+                <Form.Label>Mascota</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="pet_id"
+                  value={newAppointment.pet_id || ''}
+                  onChange={handleEditAppointmentChange}
+                >
+                  <option value="">Seleccionar Mascota</option>
+                  {pets.map((pet) => (
+                    <option key={pet.id} value={pet.id}>
+                      {pet.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              <Button variant="primary" type="submit">
+                Guardar Cambios
+              </Button>
+            </Form>
+          ) : (
+            <>
+              <Card.Text>ID de Usuario: {appointment.user?.id}</Card.Text>
+              <Card.Text>Nombre: {appointment.user?.name} {appointment.user?.lastName}</Card.Text>
+              <Card.Text>Tipo de Cita: {appointment.type}</Card.Text>
+              <Card.Text>Servicio: {appointment.service?.name || "No asignado"}</Card.Text>
+              <Card.Text>Veterinario: {appointment.veterinario?.name || "No asignado"}</Card.Text>
+              <Card.Text>Mascota: {appointment.pet?.name || "No asignado"}</Card.Text>
+            </>
+          )}
         </Card.Body>
       </Card>
     ))}
-    <h3>Crear Nueva Cita</h3>
-    <Form onSubmit={handleCreateAppointment}>
-      <Form.Group controlId="formType">
-        <Form.Label>Tipo</Form.Label>
-        <Form.Control
-          type="text"
-          name="type"
-          value={newAppointment.type || ''}
-          onChange={handleEditAppointmentChange}
-        />
-      </Form.Group>
-      <Form.Group controlId="formAppointmentDate">
-        <Form.Label>Fecha y Hora</Form.Label>
-        <Form.Control
-          type="datetime-local"
-          name="date"
-          value={newAppointment.date || ''}
-          onChange={handleEditAppointmentChange}
-        />
-      </Form.Group>
-      <Form.Group controlId="formServiceId">
-        <Form.Label>Servicio</Form.Label>
-        <Form.Control
-          as="select"
-          name="service_id"
-          value={newAppointment.service_id || ''}
-          onChange={handleEditAppointmentChange}
-        >
-          <option value="">Seleccionar Servicio</option>
-          {services.map((service) => (
-            <option key={service.id} value={service.id}>
-              {service.name}
-            </option>
-          ))}
-        </Form.Control>
-      </Form.Group>
-      <Form.Group controlId="formVeterinarioId">
-        <Form.Label>Veterinarios</Form.Label>
-        <Form.Control
-          as="select"
-          name="veterinario_id"
-          value={newAppointment.veterinario_id || ''}
-          onChange={handleEditAppointmentChange}
-        >
-          <option value="">Seleccionar Veterinario</option>
-          {veterinarios.map((veterinario) => (
-            <option key={veterinario.id} value={veterinario.id}>
-              {veterinario.name}
-            </option>
-          ))}
-        </Form.Control>
-      </Form.Group>
-      <Form.Group controlId="formPetId">
-        <Form.Label>Mascota</Form.Label>
-        <Form.Control
-          as="select"
-          name="pet_id"
-          value={newAppointment.pet_id || ''}
-          onChange={handleEditAppointmentChange}
-        >
-          <option value="">Seleccionar Mascota</option>
-          {pets.map((pet) => (
-            <option key={pet.id} value={pet.id}>
-              {pet.name}
-            </option>
-          ))}
-        </Form.Control>
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        {newAppointment.id ? "Actualizar Cita" : "Crear Cita"}
-      </Button>
-    </Form>
+    {editingAppointment === null && (
+      <>
+        <h3>Crear Nueva Cita</h3>
+        <Form onSubmit={handleCreateAppointment}>
+          <Form.Group controlId="formType">
+            <Form.Label>Tipo</Form.Label>
+            <Form.Control
+              type="text"
+              name="type"
+              value={newAppointment.type || ''}
+              onChange={handleEditAppointmentChange}
+            />
+          </Form.Group>
+          <Form.Group controlId="formAppointmentDate">
+            <Form.Label>Fecha y Hora</Form.Label>
+            <Form.Control
+              type="datetime-local"
+              name="date"
+              value={newAppointment.date || ''}
+              onChange={handleEditAppointmentChange}
+            />
+          </Form.Group>
+          <Form.Group controlId="formServiceId">
+            <Form.Label>Servicio</Form.Label>
+            <Form.Control
+              as="select"
+              name="service_id"
+              value={newAppointment.service_id || ''}
+              onChange={handleEditAppointmentChange}
+            >
+              <option value="">Seleccionar Servicio</option>
+              {services.map((service) => (
+                <option key={service.id} value={service.id}>
+                  {service.name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formVeterinarioId">
+            <Form.Label>Veterinarios</Form.Label>
+            <Form.Control
+              as="select"
+              name="veterinario_id"
+              value={newAppointment.veterinario_id || ''}
+              onChange={handleEditAppointmentChange}
+            >
+              <option value="">Seleccionar Veterinario</option>
+              {veterinarios.map((veterinario) => (
+                <option key={veterinario.id} value={veterinario.id}>
+                  {veterinario.name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+          <Form.Group controlId="formPetId">
+            <Form.Label>Mascota</Form.Label>
+            <Form.Control
+              as="select"
+              name="pet_id"
+              value={newAppointment.pet_id || ''}
+              onChange={handleEditAppointmentChange}
+            >
+              <option value="">Seleccionar Mascota</option>
+              {pets.map((pet) => (
+                <option key={pet.id} value={pet.id}>
+                  {pet.name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Crear Cita
+          </Button>
+        </Form>
+      </>
+    )}
   </div>
 );
 

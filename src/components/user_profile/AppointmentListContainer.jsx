@@ -63,10 +63,7 @@ const AppointmentListContainer = ({ isAdmin }) => {
 
     const response = await createAppointment(appointmentData, userToken.token);
     if (response.success) {
-      // Aquí obtenemos la cita recién creada
       const newAppointmentRes = await getUserAppointments(userId, userToken.token);
-      
-      // Actualizamos el estado para que incluya la nueva cita con todos los datos relacionados
       setAppointments(newAppointmentRes.data);
 
       setNewAppointment({
@@ -87,21 +84,29 @@ const AppointmentListContainer = ({ isAdmin }) => {
     setEditingAppointment(appointment.id);
     setNewAppointment({
       type: appointment.type,
-      date: appointment.date,
-      service_id: appointment.service_id || "",
-      veterinario_id: appointment.veterinario_id || "",
-      pet_id: appointment.pet_id || "",
+      date: new Date(appointment.date).toISOString().slice(0, 16), // Formato compatible para el input de tipo datetime-local
+      service_id: appointment.Service_id || appointment.service_id || "",
+      veterinario_id: appointment.Veterinario_id || appointment.veterinario_id || "",
+      pet_id: appointment.Pet_id || appointment.pet_id || "",
       user_id: userId,
     });
   };
 
-  const handleEditAppointmentChange = (e) => setNewAppointment({ ...newAppointment, [e.target.name]: e.target.value });
+  const handleEditAppointmentChange = (e) => {
+    setNewAppointment({ ...newAppointment, [e.target.name]: e.target.value });
+  };
 
   const handleEditAppointmentSubmit = async (e) => {
     e.preventDefault();
     const appointmentData = { id: editingAppointment, ...newAppointment, user_id: userId };
+
+    console.log("Datos enviados para la actualización:", appointmentData);
+
     const response = await updateAppointmentById(appointmentData, userToken.token);
+    console.log("Respuesta de la actualización de la cita:", response);
+
     if (response.success) {
+      // Recargar la lista de citas para reflejar los cambios
       const updatedAppointments = await getUserAppointments(userId, userToken.token);
       setAppointments(updatedAppointments.data);
       setEditingAppointment(null);
@@ -131,6 +136,7 @@ const AppointmentListContainer = ({ isAdmin }) => {
       handleEditAppointmentChange={handleEditAppointmentChange}
       handleEditAppointmentSubmit={handleEditAppointmentSubmit}
       handleCreateAppointment={handleCreateAppointment}
+      editingAppointment={editingAppointment}  // Pasamos el estado de edición al componente hijo
     />
   );
 };
